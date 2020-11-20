@@ -17,6 +17,12 @@ public class EmployeePayrollData {
 		this.startDate = startDate;
 	}
 
+	public EmployeePayrollData(int id, String name, double salary) {
+		this.id = id;
+		this.name = name;
+		this.salary = salary;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

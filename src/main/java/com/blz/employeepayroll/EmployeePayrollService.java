@@ -8,15 +8,20 @@ public class EmployeePayrollService {
 	}
 
 	private List<EmployeePayrollData> employeePayrollList;
+	private static EmployeePayrollDBService employeePayrollDBService;
+
+	public EmployeePayrollService() {
+		employeePayrollDBService = EmployeePayrollDBService.getInstance();
+	}
 
 	public List<EmployeePayrollData> readEmployeePayrollData(IOService ioService) throws EmployeePayrollException {
 		if (ioService.equals(IOService.DB_IO))
-			return this.employeePayrollList = new EmployeePayrollDBService().readData();
+			return this.employeePayrollList = employeePayrollDBService.readData();
 		return this.employeePayrollList;
 	}
 
 	public void updateRecord(String name, double salary) throws EmployeePayrollException {
-		int result = new EmployeePayrollDBService().updateEmployeeData(name, salary);
+		int result = employeePayrollDBService.updateEmployeeData(name, salary);
 		if (result == 0)
 			return;
 		EmployeePayrollData employeePayrollData = this.getEmployeePayrollData(name);
@@ -25,7 +30,7 @@ public class EmployeePayrollService {
 	}
 
 	public boolean checkUpdatedRecordSyncWithDatabase(String name) throws EmployeePayrollException {
-		List<EmployeePayrollData> employeePayrollData = new EmployeePayrollDBService().getEmployeePayrollData(name);
+		List<EmployeePayrollData> employeePayrollData = employeePayrollDBService.getEmployeePayrollData(name);
 		return employeePayrollData.get(0).equals(getEmployeePayrollData(name));
 	}
 
