@@ -23,7 +23,7 @@ public class EmployeePayrollTest {
 	@Test
 	public void givenEmployeePayroll_WhenRetrieved_ShouldMatchEmployeeCount() throws EmployeePayrollException {
 		List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
-		Assert.assertEquals(6, employeePayrollData.size());
+		Assert.assertEquals(3, employeePayrollData.size());
 	}
 
 	@Test
@@ -39,6 +39,6 @@ public class EmployeePayrollTest {
 			throws EmployeePayrollException, SQLException {
 		List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(IOService.DB_IO,
 				"2018-01-03", "2020-05-21");
-		Assert.assertEquals(6, employeePayrollData.size());
+		Assert.assertEquals(3, employeePayrollData.size());
 	}
 }
