@@ -36,19 +36,17 @@ public class EmployeePayrollDBService {
 		return connection;
 	}
 
-	public List<EmployeePayrollData> readData() throws EmployeePayrollException {
-		String query = "SELECT * FROM employee_payroll; ";
+	public List<EmployeePayrollData> readData(LocalDate start, LocalDate end) throws EmployeePayrollException {
+		String query = null;
+		if (start != null)
+			query = String.format("select * from employee_payroll WHERE Start between '%s' and '%s';", start, end);
+		if (start == null)
+			query = "select * from employee_payroll";
 		List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
 		try (Connection connection = this.getConnection();) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(query);
-			while (result.next()) {
-				int id = result.getInt("id");
-				String name = result.getString("name");
-				double salary = result.getDouble("salary");
-				LocalDate start = result.getDate("start").toLocalDate();
-				employeePayrollList.add(new EmployeePayrollData(id, name, salary, start));
-			}
+			employeePayrollList = this.getEmployeePayrollData(result);
 		} catch (SQLException ex) {
 			throw new EmployeePayrollException(ex.getMessage(),
 					EmployeePayrollException.ExceptionType.DATABASE_EXCEPTION);
@@ -94,7 +92,8 @@ public class EmployeePayrollDBService {
 				String name = resultSet.getString("Name");
 				double salary = resultSet.getDouble("Salary");
 				LocalDate startDate = resultSet.getDate("Start").toLocalDate();
-				employeePayrollData.add(new EmployeePayrollData(id, name, salary, startDate));
+				String gender = resultSet.getString("Gender");
+				employeePayrollData.add(new EmployeePayrollData(id, name, salary, startDate, gender));
 			}
 		} catch (SQLException ex) {
 			throw new EmployeePayrollException(ex.getMessage(),

@@ -1,5 +1,6 @@
 package com.blz.employeepayroll;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class EmployeePayrollService {
@@ -16,8 +17,22 @@ public class EmployeePayrollService {
 
 	public List<EmployeePayrollData> readEmployeePayrollData(IOService ioService) throws EmployeePayrollException {
 		if (ioService.equals(IOService.DB_IO))
-			return this.employeePayrollList = employeePayrollDBService.readData();
+			return this.employeePayrollList = employeePayrollDBService.readData(null, null);
 		return this.employeePayrollList;
+	}
+
+	public List<EmployeePayrollData> readEmployeePayrollData(IOService ioService, String start, String end)
+			throws EmployeePayrollException {
+		try {
+			LocalDate startLocalDate = LocalDate.parse(start);
+			LocalDate endLocalDate = LocalDate.parse(end);
+			if (ioService.equals(IOService.DB_IO))
+				return employeePayrollDBService.readData(startLocalDate, endLocalDate);
+			return this.employeePayrollList;
+		} catch (EmployeePayrollException e) {
+			throw new EmployeePayrollException(e.getMessage(),
+					EmployeePayrollException.ExceptionType.DATABASE_EXCEPTION);
+		}
 	}
 
 	public void updateRecord(String name, double salary) throws EmployeePayrollException {

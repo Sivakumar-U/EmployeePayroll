@@ -8,19 +8,22 @@ public class EmployeePayrollData {
 	public String name;
 	public double salary;
 	public LocalDate startDate;
+	public String gender;
 
-	public EmployeePayrollData(int id, String name, double salary, LocalDate startDate) {
+	public EmployeePayrollData(int id, String name, double salary, LocalDate startDate, String gender) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.salary = salary;
+		this.gender = gender;
 		this.startDate = startDate;
 	}
 
-	public EmployeePayrollData(int id, String name, double salary) {
+	public EmployeePayrollData(int id, String name, double salary, String gender) {
 		this.id = id;
 		this.name = name;
 		this.salary = salary;
+		this.gender = gender;
 	}
 
 	@Override
