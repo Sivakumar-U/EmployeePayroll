@@ -55,4 +55,12 @@ public class EmployeePayrollService {
 				.orElse(null);
 	}
 
+	public int readEmployeePayrollData(String function, String gender) throws EmployeePayrollException {
+		return employeePayrollDBService.readDataSumPayroll(function, gender);
+	}
+
+	public int readEmployeePayrollAvgData(String function, String gender) throws EmployeePayrollException {
+		return employeePayrollDBService.readDataAvgPayroll(function, gender);
+	}
+
 }
