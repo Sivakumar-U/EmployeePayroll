@@ -1,6 +1,7 @@
 package com.blz.employeepayroll;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Assert;
@@ -21,7 +22,7 @@ public class EmployeePayrollTest {
 	@Test
 	public void givenEmployeePayroll_WhenRetrieved_ShouldMatchEmployeeCount() throws EmployeePayrollException {
 		List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
-		Assert.assertEquals(3, employeePayrollData.size());
+		Assert.assertEquals(4, employeePayrollData.size());
 	}
 
 	@Test
@@ -57,5 +58,13 @@ public class EmployeePayrollTest {
 	@Test
 	public void givenEmployeePayrollData_ShouldReturnAvgOfFemaleEmployeeSalary() throws EmployeePayrollException {
 		Assert.assertEquals(3000000, employeePayrollService.readEmployeePayrollAvgData("Avg", "F"));
+	}
+
+	@Test
+	public void givenEmployeePayroll_WhenAddNewRecord_ShouldSyncWithDB() throws EmployeePayrollException, SQLException {
+		employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
+		employeePayrollService.addEmployeeToPayroll("Allen", 9000000.00, LocalDate.now(), "M");
+		boolean result = employeePayrollService.checkUpdatedRecordSyncWithDatabase("Allen");
+		Assert.assertTrue(result);
 	}
 }
