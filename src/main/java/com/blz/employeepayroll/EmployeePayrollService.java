@@ -63,4 +63,9 @@ public class EmployeePayrollService {
 		return employeePayrollDBService.readDataAvgPayroll(function, gender);
 	}
 
+	public void addEmployeeToPayroll(String name, double salary, LocalDate start, String gender)
+			throws EmployeePayrollException {
+		employeePayrollList.add(employeePayrollDBService.addEmployeeToPayroll(name, salary, start, gender));
+	}
+
 }

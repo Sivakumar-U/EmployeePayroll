@@ -92,8 +92,7 @@ public class EmployeePayrollDBService {
 				String name = resultSet.getString("Name");
 				double salary = resultSet.getDouble("Salary");
 				LocalDate startDate = resultSet.getDate("Start").toLocalDate();
-				String gender = resultSet.getString("Gender");
-				employeePayrollData.add(new EmployeePayrollData(id, name, salary, startDate, gender));
+				employeePayrollData.add(new EmployeePayrollData(id, name, salary, startDate));
 			}
 		} catch (SQLException ex) {
 			throw new EmployeePayrollException(ex.getMessage(),
@@ -143,6 +142,29 @@ public class EmployeePayrollDBService {
 					EmployeePayrollException.ExceptionType.DATABASE_EXCEPTION);
 		}
 		return avgTotal;
+	}
+
+	public EmployeePayrollData addEmployeeToPayroll(String name, double salary, LocalDate start, String gender)
+			throws EmployeePayrollException {
+		int id = -1;
+		EmployeePayrollData employeePayrollData = null;
+		String query = String.format(
+				"insert into employee_payroll(Name, Salary, Start, Gender) values ('%s', '%s', '%s', '%s')", name,
+				salary, start, gender);
+		try (Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			int rowAffected = statement.executeUpdate(query, statement.RETURN_GENERATED_KEYS);
+			if (rowAffected == 1) {
+				ResultSet resultSet = statement.getGeneratedKeys();
+				if (resultSet.next())
+					id = resultSet.getInt(1);
+			}
+			employeePayrollData = new EmployeePayrollData(id, name, salary, start);
+		} catch (SQLException e) {
+			throw new EmployeePayrollException(e.getMessage(),
+					EmployeePayrollException.ExceptionType.DATABASE_EXCEPTION);
+		}
+		return employeePayrollData;
 	}
 
 }
