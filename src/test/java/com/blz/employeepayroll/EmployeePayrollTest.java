@@ -1,7 +1,5 @@
 package com.blz.employeepayroll;
 
-import static org.junit.Assert.*;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,7 +26,6 @@ public class EmployeePayrollTest {
 
 	@Test
 	public void givenEmployeePayroll_WhenUpdate_ShouldSyncWithDB() throws EmployeePayrollException, SQLException {
-		List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
 		employeePayrollService.updateRecord("Terisa", 3000000);
 		boolean result = employeePayrollService.checkUpdatedRecordSyncWithDatabase("Terisa");
 		Assert.assertTrue(result);
@@ -40,5 +37,25 @@ public class EmployeePayrollTest {
 		List<EmployeePayrollData> employeePayrollData = employeePayrollService.readEmployeePayrollData(IOService.DB_IO,
 				"2018-01-03", "2020-05-21");
 		Assert.assertEquals(3, employeePayrollData.size());
+	}
+
+	@Test
+	public void givenEmployeePayrollData_ShouldReturnTotalOfMaleEmployeeSalary() throws EmployeePayrollException {
+		Assert.assertEquals(8000000, employeePayrollService.readEmployeePayrollData("Sum", "M"));
+	}
+
+	@Test
+	public void givenEmployeePayrollData_ShouldReturnTotalOfFemaleEmployeeSalary() throws EmployeePayrollException {
+		Assert.assertEquals(3000000, employeePayrollService.readEmployeePayrollData("Sum", "F"));
+	}
+
+	@Test
+	public void givenEmployeePayrollData_ShouldReturnAvgOfMaleEmployeeSalary() throws EmployeePayrollException {
+		Assert.assertEquals(4000000, employeePayrollService.readEmployeePayrollAvgData("Avg", "M"));
+	}
+
+	@Test
+	public void givenEmployeePayrollData_ShouldReturnAvgOfFemaleEmployeeSalary() throws EmployeePayrollException {
+		Assert.assertEquals(3000000, employeePayrollService.readEmployeePayrollAvgData("Avg", "F"));
 	}
 }
