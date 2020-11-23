@@ -76,4 +76,13 @@ public class EmployeePayrollTest {
 		Assert.assertTrue(result);
 	}
 
+	@Test
+	public void givenEmployeePayroll_WhenAddNewRecord_ShouldeReturnUpdatedValue()
+			throws EmployeePayrollException, SQLException {
+		employeePayrollService.readEmployeePayrollData(IOService.DB_IO);
+		employeePayrollService.addEmployeeToPayroll("Vamsi", 4000000.00, LocalDate.now(), "M", "Marketing");
+		boolean result = employeePayrollService.checkUpdatedRecordSyncWithDatabase("Vamsi");
+		Assert.assertTrue(result);
+	}
+
 }
