@@ -15,7 +15,7 @@ public class EmployeePayrollTest {
 	private static EmployeePayrollService employeePayrollService;
 
 	@BeforeClass
-	public static void createcensusAnalyser() {
+	public static void createEmployeePayrollObj() {
 		employeePayrollService = new EmployeePayrollService();
 	}
 
@@ -67,4 +67,5 @@ public class EmployeePayrollTest {
 		boolean result = employeePayrollService.checkUpdatedRecordSyncWithDatabase("Allen");
 		Assert.assertTrue(result);
 	}
+
 }
